@@ -18,34 +18,48 @@ public class Program
         var secondFlowerAndPriceSheet = secondFlowerAndPriceTable.WorkSheets.First();
         var flowerAndCountSheet = flowerAndCountTable.WorkSheets.First();
 
-
+        int j = 0;
         Dictionary<string, decimal> flowerAndPrice = new();
-        for(int i= 3; ;i++)
+        for(int i= 1; ;i++)
         {
-            if (flowerAndPriceSheet[$"B{i}"].IsEmpty)
-                break;
-            if (flowerAndPrice.ContainsKey(flowerAndPriceSheet[$"B{i}"].StringValue.Trim().ToLower()))
+        
+            if (flowerAndPrice.ContainsKey(flowerAndPriceSheet[$"B{i}"].StringValue.Trim().ToLower()) | flowerAndPriceSheet[$"B{i}"].IsEmpty)
+            {
+                j++;
+                if (j > 10) break;
                 continue;
+                
+            }
             flowerAndPrice.Add(flowerAndPriceSheet[$"B{i}"].StringValue.Trim().ToLower(), flowerAndPriceSheet[$"D{i}"].DecimalValue);
-            
+            j = 0;
         }
-        for (int i = 2; ; i++)
+        j = 0;
+        for (int i = 1; ; i++)
         {
-            if (secondFlowerAndPriceSheet[$"B{i}"].IsEmpty)
-                break;
-            if (flowerAndPrice.ContainsKey(secondFlowerAndPriceSheet[$"B{i}"].StringValue.Trim().ToLower()) | secondFlowerAndPriceSheet[$"C{i}"].IsEmpty)
-                continue;
-            flowerAndPrice.Add(secondFlowerAndPriceSheet[$"B{i}"].StringValue.Trim().ToLower(), secondFlowerAndPriceSheet[$"C{i}"].DecimalValue);
 
+            if (flowerAndPrice.ContainsKey(secondFlowerAndPriceSheet[$"B{i}"].StringValue.Trim().ToLower()) | secondFlowerAndPriceSheet[$"C{i}"].IsEmpty)
+            {
+                j++;
+                if(j> 10) break;
+                continue;
+            }
+            flowerAndPrice.Add(secondFlowerAndPriceSheet[$"B{i}"].StringValue.Trim().ToLower(), secondFlowerAndPriceSheet[$"C{i}"].DecimalValue);
+             j = 0;
         }
 
         Dictionary<string, int> flowerAndCount = new();
-
-        for (int i = 9; i<=1883; i++)
+        j = 0;
+        for (int i = 1;; i++)
         {
-            if (flowerAndCount.ContainsKey(flowerAndCountSheet[$"A{i}"].StringValue.Trim().ToLower()) | flowerAndCountSheet[$"E{i}"].IsEmpty | flowerAndCountSheet[$"E{i}"].IntValue==0)
+            if (flowerAndCount.ContainsKey(flowerAndCountSheet[$"A{i}"].StringValue.Trim().ToLower()) | flowerAndCountSheet[$"E{i}"].IsEmpty | flowerAndCountSheet[$"E{i}"].IntValue == 0 | flowerAndCountSheet[$"A{i}"].StringValue.Trim().ToLower().Contains("итого"))
+            {
+                j++;
+                if (j > 500) break;
                 continue;
+            }
             flowerAndCount.Add(flowerAndCountSheet[$"A{i}"].StringValue.Trim().ToLower(), flowerAndCountSheet[$"E{i}"].IntValue);
+            j = 0;
+            
 
         }
 
